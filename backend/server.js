@@ -1,7 +1,13 @@
 const { response } = require("express");
+const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
+const connectDB = require("./config/db");
 const express = require("express");
+const { connect } = require("http2");
 const dotenv = require("dotenv").config();
+
+// Connect to DB
+connectDB();
 
 const app = express();
 
