@@ -1,0 +1,11 @@
+{
+  "name": "support-speedy-ticket",
+  "version": "1.0.0",
+  "description": "Support Speedy Ticket is a ticket app that a user can submit to the server describing if they need any help with anything",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "author": "Luis Pellizzon",
+  "license": "MIT"
+}
