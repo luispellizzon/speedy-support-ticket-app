@@ -80,7 +80,14 @@ const logUser = asyncHandler(async (req, res) => {
 /* @access Private */
 
 const getMe = asyncHandler(async (req, res) => {
-  res.send("Me");
+  const { _id, name, email } = req.user;
+  const user = {
+    id: _id,
+    name,
+    email,
+  };
+
+  res.status(200).json(user);
 });
 
 //Generate WebToken
