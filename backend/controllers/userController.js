@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const jsonWebToken = require("jsonwebtoken");
+/* -------- Register User --------- */
 
 /* @desc   Register new user */
 /* @route  /api/users */
@@ -47,6 +48,8 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+/* -------- Login User --------- */
+
 /* @desc   Login user */
 /* @route  /api/users/login */
 /* @access Public */
@@ -70,6 +73,16 @@ const logUser = asyncHandler(async (req, res) => {
   }
 });
 
+/* -------- Get User info --------- */
+
+/* @desc   get user info*/
+/* @route  /api/users/me */
+/* @access Private */
+
+const getMe = asyncHandler(async (req, res) => {
+  res.send("Me");
+});
+
 //Generate WebToken
 
 const generateToken = (id) => {
@@ -81,4 +94,5 @@ const generateToken = (id) => {
 module.exports = {
   registerUser,
   logUser,
+  getMe,
 };
