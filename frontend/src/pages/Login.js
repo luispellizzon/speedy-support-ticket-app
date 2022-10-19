@@ -25,7 +25,7 @@ function Login() {
     <>
       <section className="heading">
         <h1>
-          <FaSignInAlt /> Register
+          <FaSignInAlt /> Login
         </h1>
         <p>Login here to get support</p>
       </section>
