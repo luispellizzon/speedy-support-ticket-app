@@ -39,6 +39,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -61,12 +62,21 @@ const logUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      token: generateToken(user._id),
     });
   } else {
     res.status(401);
     throw new Error("Invalid credentials");
   }
 });
+
+//Generate WebToken
+
+const generateToken = (id) => {
+  return jsonWebToken.sign({ id }, process.env.JWT.SECRET, {
+    expiresIn: "45d",
+  });
+};
 
 module.exports = {
   registerUser,
