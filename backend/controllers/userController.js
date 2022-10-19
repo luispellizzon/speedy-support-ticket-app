@@ -73,7 +73,7 @@ const logUser = asyncHandler(async (req, res) => {
 //Generate WebToken
 
 const generateToken = (id) => {
-  return jsonWebToken.sign({ id }, process.env.JWT.SECRET, {
+  return jsonWebToken.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "45d",
   });
 };
