@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const jsonWebToken = require("jsonwebtoken");
+const { ConnectableObservable } = require("rxjs");
 /* -------- Register User --------- */
 
 /* @desc   Register new user */
@@ -58,18 +59,23 @@ const logUser = asyncHandler(async (req, res) => {
 
   //  Find user on DB and compare password with hash value from bcrypt
   const user = await User.findOne({ email });
-  const comparePassword = await bcrypt.compare(password, user.password);
 
-  if (user && comparePassword) {
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
-    });
+  if (user) {
+    const comparePassword = await bcrypt.compare(password, user.password);
+    if (comparePassword) {
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(401);
+      throw new Error("Invalid credentials");
+    }
   } else {
     res.status(401);
-    throw new Error("Invalid credentials");
+    throw new Error("Invalid email");
   }
 });
 
