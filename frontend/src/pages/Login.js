@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, reset } from "../features/auth/authSlice";
 import { FaSignInAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Spinner from "../components/Spinner.js";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ function Login() {
   const navigate = useNavigate();
 
   // Grab auth state from redux
-  const { user, isError, isSuccess, message } = useSelector(
+  const { user, isError, isSuccess, message, isLoading } = useSelector(
     (state) => state.auth
   );
   useEffect(() => {
@@ -51,6 +52,10 @@ function Login() {
     };
     dispatch(login(userData));
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
