@@ -27,6 +27,8 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // userData obj to pass as an argument to dispatch function
     const userData = {
       email,
       password,
