@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { register } from "../features/auth/authSlice";
 import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -11,6 +13,12 @@ function Register() {
   });
 
   const { name, email, password, password2 } = formData;
+
+  const dispatch = useDispatch();
+
+  const { user, isLoading, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
 
   const handleOnChange = (e) => {
     setFormData((prevState) => ({
@@ -25,6 +33,14 @@ function Register() {
     if (password !== password2) {
       toast.error("Please, make sure your password is correct!");
       return;
+    } else {
+      const userData = {
+        name,
+        email,
+        password,
+        password2,
+      };
+      dispatch(register(userData));
     }
   };
 
