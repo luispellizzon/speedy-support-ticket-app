@@ -75,7 +75,7 @@ const logUser = asyncHandler(async (req, res) => {
     }
   } else {
     res.status(401);
-    throw new Error("Invalid email");
+    throw new Error("Invalid credentials");
   }
 });
 
