@@ -14,8 +14,10 @@ function Register() {
 
   const { name, email, password, password2 } = formData;
 
+  // Initialize dispatch hook
   const dispatch = useDispatch();
 
+  // Grab auth state from redux
   const { user, isLoading, isSuccess, message } = useSelector(
     (state) => state.auth
   );
@@ -34,6 +36,7 @@ function Register() {
       toast.error("Please, make sure your password is correct!");
       return;
     } else {
+      // userData obj to pass as an argument to dispatch function
       const userData = {
         name,
         email,
