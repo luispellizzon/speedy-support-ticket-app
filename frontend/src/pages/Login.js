@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../features/auth/authSlice";
+import { login, reset } from "../features/auth/authSlice";
 import { FaSignInAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -14,9 +15,24 @@ function Login() {
 
   // Initialize dispatch hook
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Grab auth state from redux
-  const { user } = useSelector((state) => state.auth);
+  const { user, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    //Redirect when user login
+    if (isSuccess) {
+      toast.success("You are all set!");
+      navigate("/");
+    }
+    dispatch(reset());
+  }, [isError, isSuccess, navigate, dispatch, message]);
 
   const handleOnChange = (e) => {
     setFormData((prevState) => ({
