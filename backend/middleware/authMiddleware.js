@@ -2,7 +2,7 @@ const jsonWebToken = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 
-const protection = asyncHandler(async (req, rest, next) => {
+const protection = asyncHandler(async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -21,12 +21,12 @@ const protection = asyncHandler(async (req, rest, next) => {
       next();
     } catch (error) {
       console.log(error);
-      rest.status(401);
+      res.status(401);
       throw new Error("Not Authorized");
     }
   }
   if (!token) {
-    rest.status(401);
+    res.status(401);
     throw new Error("Not Authorized");
   }
 });

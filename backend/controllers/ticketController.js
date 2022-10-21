@@ -9,7 +9,17 @@ const Ticket = require("../models/ticketModel");
 /* @access Private */
 
 const getTickets = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "getTickets" });
+  // -> Get user using id and webtoken
+  const user = await User.findById(req.user.id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error("User not found.");
+  }
+
+  const tickets = await Ticket.find({ user: req.user.id });
+
+  res.status(200).json({ user, message: "getTickets" });
 });
 
 /* -------- Creat User Tickets --------- */
