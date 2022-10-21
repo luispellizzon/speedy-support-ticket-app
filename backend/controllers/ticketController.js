@@ -9,30 +9,53 @@ const Ticket = require("../models/ticketModel");
 /* @access Private */
 
 const getTickets = asyncHandler(async (req, res) => {
-  // -> Get user using id and webtoken
-  const user = await User.findById(req.user.id);
+	// -> Get user using id and webtoken
+	const user = await User.findById(req.user.id);
 
-  if (!user) {
-    res.status(401);
-    throw new Error("User not found.");
-  }
+	if (!user) {
+		res.status(401);
+		throw new Error("User not found.");
+	}
 
-  const tickets = await Ticket.find({ user: req.user.id });
+	const tickets = await Ticket.find({ user: req.user.id });
 
-  res.status(200).json({ user, message: "getTickets" });
+	res.status(200).json(tickets);
 });
 
-/* -------- Creat User Tickets --------- */
+/* -------- Create User Tickets --------- */
 
 /* @desc   Create user info*/
 /* @route  POST /api/tickets */
 /* @access Private */
 
 const createTicket = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "createTickets" });
+	const { product, description } = req.body;
+
+	// -> Check inputs from front end;
+	if (!product || !description) {
+		res.status(400);
+		throw new Error("Please, add a product and description");
+	}
+
+	// -> Get user by id from auth using token
+	const user = User.findById(req.user.id);
+
+	if (!user) {
+		res.status(401);
+		throw new Error("User not found");
+	}
+
+	const ticket = await Ticket.create({
+		user: req.user.id,
+		product,
+		description,
+		status: "new",
+	});
+
+	res.status(201).json(ticket);
 });
 
 module.exports = {
-  getTickets,
-  createTicket,
+	getTickets,
+	createTicket,
 };

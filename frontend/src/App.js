@@ -7,21 +7,21 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 function App() {
-  return (
-    <>
-      <ToastContainer pauseOnHover theme="dark" autoClose={3000} />
-      <Router>
-        <div className="container">
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </div>
-      </Router>
-    </>
-  );
+	return (
+		<>
+			<ToastContainer pauseOnHover theme="dark" autoClose={3000} />
+			<Router>
+				<div className="container">
+					<Header />
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/login" element={<Login />} />
+						<Route path="/register" element={<Register />} />
+					</Routes>
+				</div>
+			</Router>
+		</>
+	);
 }
 
 export default App;
