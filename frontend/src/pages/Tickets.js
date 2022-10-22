@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getTickets, reset } from "../features/ticket/ticketSlice";
 import Spinner from "../components/Spinner";
@@ -21,9 +21,11 @@ function Tickets() {
 
 	useEffect(() => {
 		dispatch(getTickets());
-		//
-		dispatch(reset());
+
+		// dispatch(reset());
 	}, [dispatch]);
+
+	// console.log(ticketData);
 
 	if (isLoading) {
 		return <Spinner />;
