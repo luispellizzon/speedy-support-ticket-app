@@ -17,7 +17,7 @@ function Ticket() {
 		}
 		dispatch(getTicket(params.ticketId));
 		dispatch(reset());
-	}, [dispatch, params.ticketId]);
+	}, [params.ticketId]);
 
 	if (isLoading) {
 		return <Spinner />;
@@ -33,6 +33,12 @@ function Ticket() {
 					Ticket ID: {ticket._id}
 					<span className={`status status-${ticket.status}`}>{ticket.status}</span>
 				</h2>
+				<h3>Date Submitted: {new Date(ticket.createdAt).toLocaleString("en-IE")}</h3>
+				<hr />
+				<div className="ticket-desc">
+					<h3>Issue Description:</h3>
+					<p>{ticket.description}</p>
+				</div>
 			</header>
 		</div>
 	);
