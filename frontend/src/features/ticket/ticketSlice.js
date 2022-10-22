@@ -41,10 +41,25 @@ export const getTickets = createAsyncThunk("tickets/getAll", async (_, thunkAPI)
 });
 
 /* -- Get Single Ticket -- */
-export const getTicket = createAsyncThunk("tickets/get", async (ticketId, thunkAPI) => {
+export const getTicket = createAsyncThunk("ticket/get", async (ticketId, thunkAPI) => {
 	try {
 		const token = thunkAPI.getState().auth.user.token;
 		return await ticketService.getTicket(ticketId, token);
+	} catch (error) {
+		// const message =
+		// 	(error.response && error.response.data && error.response.data.message) ||
+		// 	error.message ||
+		// 	error.toString();
+		const message = error?.response?.data?.message || error?.message?.toString();
+		return thunkAPI.rejectWithValue(message);
+	}
+});
+
+/* -- Close Ticket -- */
+export const closeTicket = createAsyncThunk("ticket/close", async (ticketId, thunkAPI) => {
+	try {
+		const token = thunkAPI.getState().auth.user.token;
+		return await ticketService.closeTicket(ticketId, token);
 	} catch (error) {
 		// const message =
 		// 	(error.response && error.response.data && error.response.data.message) ||
@@ -101,6 +116,12 @@ export const ticketSlice = createSlice({
 				state.isLoading = false;
 				state.isError = true;
 				state.message = action.payload;
+			})
+			.addCase(closeTicket.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.tickets.map((ticket) =>
+					ticket._id === action.payload._id ? (ticket.status = "closed") : ticket,
+				);
 			});
 	},
 });
