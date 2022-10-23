@@ -1,22 +1,25 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getTicket, reset, closeTicket } from "../features/ticket/ticketSlice";
+import { getTicket, closeTicket } from "../features/ticket/ticketSlice";
 import { toast } from "react-toastify";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
+import { getNotes, reset as noteReset } from "../features/notes/noteSlice";
 
 function Ticket() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
 	const { ticket, isError, message, isLoading } = useSelector((state) => state.ticket);
+	const { notes, isSuccess, isLoading: notesIsLoading } = useSelector((state) => state.notes);
 
 	useEffect(() => {
 		if (isError) {
 			toast.error(message);
 		}
 		dispatch(getTicket(params.ticketId));
+		dispatch(getNotes(params.ticketId));
 	}, [params.ticketId]);
 
 	const onTicketClose = () => {
@@ -25,7 +28,7 @@ function Ticket() {
 		navigate("/tickets");
 	};
 
-	if (isLoading) {
+	if (isLoading || notesIsLoading) {
 		return <Spinner />;
 	}
 	if (isError) {

@@ -20,7 +20,7 @@ export const createTicket = createAsyncThunk("tickets/create", async (ticketData
 		// 	(error.response && error.response.data && error.response.data.message) ||
 		// 	error.message ||
 		// 	error.toString();
-		const message = error?.response?.data?.message || error?.message?.toString();
+		const message = error?.response?.data?.message || error?.message.toString();
 		return thunkAPI.rejectWithValue(message);
 	}
 });

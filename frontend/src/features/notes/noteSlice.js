@@ -10,6 +10,18 @@ const initialState = {
 	message: "",
 };
 
+/* Functions */
+export const getNotes = createAsyncThunk("notes/getAll", async (ticketId, thunkAPI) => {
+	try {
+		const token = thunkAPI.getState().auth.user.token;
+		return await noteService.getNotes(ticketId, token);
+	} catch (error) {
+		const message = error?.response?.data?.message || error?.message.toString();
+
+		return thunkAPI.rejectWithValue(message);
+	}
+});
+
 /* --  2- Notes Slice with reducers -- */
 const noteSlice = createSlice({
 	name: "notes",
@@ -17,7 +29,22 @@ const noteSlice = createSlice({
 	reducer: {
 		reset: (state) => initialState,
 	},
-	extraReducers: (builder) => {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(getNotes.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(getNotes.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.isSuccess = true;
+				state.notes = action.payload;
+			})
+			.addCase(getNotes.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isError = true;
+				state.message = action.payload;
+			});
+	},
 });
 
 export const { reset } = noteSlice.actions;
