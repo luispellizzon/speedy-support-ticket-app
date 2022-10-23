@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getTicket, closeTicket } from "../features/ticket/ticketSlice";
 import { toast } from "react-toastify";
 import BackButton from "../components/BackButton";
+import NoteItem from "../components/NoteItem";
 import Spinner from "../components/Spinner";
 import { getNotes, reset as noteReset } from "../features/notes/noteSlice";
 
@@ -49,7 +50,11 @@ function Ticket() {
 					<h3>Issue Description:</h3>
 					<p>{ticket.description}</p>
 				</div>
+				<h2>Notes</h2>
 			</header>
+			{notes.map((note) => (
+				<NoteItem key={note._id} note={note} />
+			))}
 			{ticket.status !== "closed" && (
 				<button className="btn btn-block btn-danger " onClick={onTicketClose}>
 					Close Ticket
