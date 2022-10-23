@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getTicket, closeTicket } from "../features/ticket/ticketSlice";
+import { FaPlus } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Modal from "react-modal";
 import BackButton from "../components/BackButton";
@@ -47,6 +48,21 @@ function Ticket() {
 		navigate("/tickets");
 	};
 
+	/* Open / Close Modal */
+	const openModal = () => {
+		setModalIsOpen(true);
+	};
+	const closeModal = () => {
+		setModalIsOpen(false);
+	};
+
+	/*Submit form*/
+	const onNoteSubmit = (e) => {
+		e.preventDefault();
+		console.log("Submit", noteText);
+		setNoteText("");
+	};
+
 	if (isLoading || notesIsLoading) {
 		return <Spinner />;
 	}
@@ -71,6 +87,14 @@ function Ticket() {
 				</div>
 				<h2>Notes</h2>
 			</header>
+			{ticket.statue !== "closed" && (
+				<button className="btn" onClick={openModal}>
+					{" "}
+					<FaPlus />
+					Add Note
+				</button>
+			)}
+
 			{notes.map((note) => (
 				<NoteItem key={note._id} note={note} />
 			))}
@@ -79,6 +103,34 @@ function Ticket() {
 					Close Ticket
 				</button>
 			)}
+			<Modal
+				isOpen={modalIsOpen}
+				onRequestClose={closeModal}
+				style={customStyle}
+				contentLabel="Add Note"
+			>
+				<h2>Add Note</h2>
+				<button className="btn-close" onClick={closeModal}>
+					X
+				</button>
+				<form onSubmit={onNoteSubmit}>
+					<div className="form-group">
+						<textarea
+							name="noteText"
+							id="noteText"
+							className="form-control"
+							placeholder="Note..."
+							value={noteText}
+							onChange={(e) => setNoteText(e.target.value)}
+						></textarea>
+					</div>
+					<div className="form-group">
+						<button className="btn" type="submit">
+							Submit
+						</button>
+					</div>
+				</form>
+			</Modal>
 		</div>
 	);
 }
