@@ -8,7 +8,7 @@ import Modal from "react-modal";
 import BackButton from "../components/BackButton";
 import NoteItem from "../components/NoteItem";
 import Spinner from "../components/Spinner";
-import { getNotes, reset as noteReset } from "../features/notes/noteSlice";
+import { getNotes, createNote, reset as noteReset } from "../features/notes/noteSlice";
 
 const customStyle = {
 	content: {
@@ -59,8 +59,11 @@ function Ticket() {
 	/*Submit form*/
 	const onNoteSubmit = (e) => {
 		e.preventDefault();
-		console.log("Submit", noteText);
+		const { ticketId } = params;
+		dispatch(createNote({ noteText, ticketId }));
 		setNoteText("");
+
+		closeModal();
 	};
 
 	if (isLoading || notesIsLoading) {
