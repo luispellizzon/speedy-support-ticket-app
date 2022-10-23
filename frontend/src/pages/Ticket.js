@@ -1,14 +1,32 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getTicket, closeTicket } from "../features/ticket/ticketSlice";
 import { toast } from "react-toastify";
+import Modal from "react-modal";
 import BackButton from "../components/BackButton";
 import NoteItem from "../components/NoteItem";
 import Spinner from "../components/Spinner";
 import { getNotes, reset as noteReset } from "../features/notes/noteSlice";
 
+const customStyle = {
+	content: {
+		width: "600px",
+		top: "50%",
+		left: "50%",
+		right: "auto",
+		bottom: "auto",
+		marginRight: "-50%",
+		transform: "translate(-50%,-50%)",
+		position: "relative",
+	},
+};
+
+Modal.setAppElement("#root");
+
 function Ticket() {
+	const [modalIsOpen, setModalIsOpen] = useState(false);
+	const [noteText, setNoteText] = useState("");
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const params = useParams();
@@ -35,6 +53,7 @@ function Ticket() {
 	if (isError) {
 		return <h2>Sorry, but something went wrong. Our team is working on the problem!</h2>;
 	}
+
 	return (
 		<div className="ticket-page">
 			<header className="ticket-header">
