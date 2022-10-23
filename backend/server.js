@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/tickets", require("./routes/ticketRoutes"));
 
-// Serve frontend FOR PRODUCTION
+// Serve frontend FOR PRODUCTION to deploy on Heroku
 if (process.env.NODE_ENV === "production") {
 	//Set build folder as static
 	app.use(express.static(path.join(__dirname, "../frontend/build")));
