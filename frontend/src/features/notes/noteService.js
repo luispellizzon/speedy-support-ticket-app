@@ -4,8 +4,8 @@ const API_URL = "/:ticketId/notes";
 /* -- Get Notes -- */
 const getNotes = () => {};
 
-const notesService = {
+const noteService = {
 	getNotes,
 };
 
-export default notesService;
+export default noteService;
