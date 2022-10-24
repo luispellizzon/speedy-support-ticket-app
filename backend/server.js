@@ -34,8 +34,11 @@ if (process.env.NODE_ENV === "production") {
 		res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 	});
 } else {
-	app.get("/", (_, res) => {
-		res.status(200).json({ message: "Welcome to the Support Desk API" });
+	// app.get("/", (_, res) => {
+	// 	res.status(200).json({ message: "Welcome to the Support Desk API" });
+	// });
+	app.get("*", (_, res) => {
+		res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 	});
 }
 
