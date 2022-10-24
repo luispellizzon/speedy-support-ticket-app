@@ -1,9 +1,8 @@
-const { response } = require("express");
+const path = require("path");
 const colors = require("colors");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const connectDB = require("./config/db");
 const express = require("express");
-const { connect } = require("http2");
 const dotenv = require("dotenv").config();
 
 // Connect to DB
@@ -18,12 +17,26 @@ app.use(express.urlencoded({ extended: false }));
 const PORT = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to Speedy Support Ticket API" });
+	res.status(200).json({ message: "Welcome to Speedy Support Ticket API" });
 });
 
 // Routes
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/tickets", require("./routes/ticketRoutes"));
+
+// Serve frontend FOR PRODUCTION to deploy on Heroku
+if (process.env.NODE_ENV === "production") {
+	//Set build folder as static
+	app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+	app.get("*", (req, res) => {
+		res.sendFile(__dirname, "../", "frontend", "build", "index.html");
+	});
+} else {
+	app.get("/", (req, res) => {
+		res.status(200).json({ message: "Welcome to Speedy Support Ticket API" });
+	});
+}
 
 app.use(errorHandler);
 
